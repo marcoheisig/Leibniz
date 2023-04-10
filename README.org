@@ -1,0 +1,42 @@
+#+TITLE: Leibniz - A Computer Algebra System for Common Lisp
+
+This repository contains an early sketch of a computer algebra system for
+Common Lisp.  It describes an extensible protocol for manipulating mathematical
+expressions, and provides several implementations for this protocol.
+
+The following implementations exist:
+
+- common-lisp :: A very rudimentary implementation based on S-expressions that
+  is mostly intended for debugging.
+
+- maxima :: An extremely powerful representation that implements all
+  functionality on top of the computer algebra system Maxima.  This is the
+  default representation.
+
+Example session:
+
+#+begin_src lisp
+(in-package #:leibniz-user)
+
+(+ 2 2)
+;; => 4
+
+(+ 2 'x)
+;; => #<leibniz-maxima:expression x+2>
+
+(compound-expression-arguments (+ 2 'x))
+;; => (#<leibniz-maxima:expression x> #<leibniz-maxima:expression 2>)
+
+(solve (+ (* 'a (expt 'x 2)) (* 'b 'x) 'c) 'x)
+;; => (#<leibniz-maxima:expression x = -((sqrt(b^2-4*a*c)+b)/(2*a))>
+;;     #<leibniz-maxima:expression x = (sqrt(b^2-4*a*c)-b)/(2*a)>)
+
+(integrate (expt (sin 'x) 3) 'x)
+;; => #<leibniz-maxima:expression cos(x)^3/3-cos(x)>
+
+(integrate (* 8 'x) 'x -1 1)
+;; => 0
+
+(integrate (* 8 'x) 'x 0 1)
+;; => 4
+#+end_src
